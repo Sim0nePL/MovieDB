@@ -48,22 +48,4 @@
 		transform: translateY(-50%);
 		height: 70%;
 	}
-
-	/* input {
-      padding: 5px 20px;
-      background-color: var(--color-dark-mid);
-      border: 2px solid var(--color-dark-high);
-      border-radius: 10px;
-      outline: none;
-
-      font-family: var(--font-vend-sans);
-      font-size: 20px;
-
-      transition: background-color 0.15s ease, border 0.15s ease;
-   }
-
-   input:hover {
-      background-color: var(--color-dark-high);
-      border-color: var(--color-primary-dim);
-   } */
 </style>

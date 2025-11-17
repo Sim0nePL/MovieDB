@@ -1,6 +1,6 @@
 <script lang="ts">
-    import TextInput from '$lib/components/TextInput.svelte';
-    import Button from '$lib/components/Button.svelte';
+    import Button from "$lib/components/Button.svelte";
+    import TextInput from "$lib/components/TextInput.svelte";
 
     let searchValue: string = $state('');
 </script>
@@ -13,7 +13,7 @@
         <Button
             onclick={() => {
                 if (searchValue == '') return;
-                location.href = ./browse?q=${searchValue};
+                location.href = `./browse?q=${searchValue}`;
             }}>Browse</Button
         >
     </div>
