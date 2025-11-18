@@ -122,8 +122,8 @@
 		page: 1
 	});
 
-	let response: any = $state(undefined);
-	$inspect(response);
+	let result: any = $state(undefined);
+	$inspect(result);
 
 	// Api Call - Returns Result
 	const SearchMedia = async (page: number = 1) => {
@@ -194,7 +194,7 @@
 		media.title = params.get('q') ?? '';
 
 		(async () => {
-			response = await SearchMedia();
+			result = await SearchMedia();
 		})();
 	});
 </script>
@@ -203,7 +203,7 @@
 	<section class="left">
 		<Header/>
 		<Button id="search_button" onclick={async () => {
-			response = await SearchMedia();
+			result = await SearchMedia();
 		}}>Search</Button>
 		<h2>Title</h2>
 		<TextInput bind:value={media.title}></TextInput>
@@ -255,21 +255,21 @@
 		<h5>Emm... also pages broke when using filters because API returns wrong total_page value...</h5>
 	</section>
 	<section class="right">
-		{#if response !== undefined} <!-- Check is response undefined in case api call threw error -->
-		<h2>Found {response.total_results}:</h2>
+		{#if result !== undefined} <!-- Check is result undefined in case api call threw error -->
+		<h2>Found {result.total_results}:</h2>
 		<div>
-				{#each response.results as media}
+				{#each result.results as media}
 					<MediaBanner {media}></MediaBanner>
 				{/each}
 			</div>
 			<Button onclick={async () => {
-				if(response.page > 1)
-					response = await SearchMedia(response.page - 1);
+				if(result.page > 1)
+					result = await SearchMedia(result.page - 1);
 			}}>&larr;</Button>
-			<p class="right_page-index">Page {response.page}/{response.total_pages}</p>
+			<p class="right_page-index">Page {result.page}/{result.total_pages}</p>
 			<Button onclick={async () => {
-				if (response.page < response.total_pages)
-					response = await SearchMedia(response.page + 1);
+				if (result.page < result.total_pages)
+					result = await SearchMedia(result.page + 1);
 			}}>&rarr;</Button>
 		{/if}
 	</section>

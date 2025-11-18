@@ -3,13 +3,15 @@
     import TextInput from "$lib/components/TextInput.svelte";
 
     let searchValue: string = $state('');
+
+
+
 </script>
 
 <section>
     <h3>Odkryj świat <span>filmów</span>!</h3>
     <TextInput id="media_title-input" bind:value={searchValue} placeholder="Black Mirror" />
     <div class="buttons">
-        <Button>Discover</Button>
         <Button
             onclick={() => {
                 location.href = `./browse?q=${searchValue}`;

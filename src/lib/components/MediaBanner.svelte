@@ -24,7 +24,32 @@
             <p class="tag">{genre}</p>
          {/each}
       </div>
-      
+      <div class="info__bottom">
+         {#if media.release_date != null }
+            <div class="release_year">
+               <h5>Release Year</h5>
+               <p>{ media.release_date.split('-')[0] }</p>
+            </div>
+         {/if}
+         {#if media.runtime != null }
+            <div class="runtime">
+               <h5>Runtime</h5>
+               <p>{ media.runtime / 60 } min</p>
+            </div>
+         {/if}
+         {#if media.seasons_number != null }
+            <div class="seasons_number">
+               <h5>Release Year</h5>
+               <p>{ media.seasons_number }</p>
+            </div>
+         {/if}
+         {#if media.seasons_number != null }
+            <div class="stats">
+               <h5>Status</h5>
+               <p>{ media.status }</p>
+            </div>
+         {/if}
+      </div>
       
    </div>
 </div>
@@ -45,6 +70,15 @@
 
    .media__card:hover {
       background-position: right bottom;
+   }
+
+   .info__bottom {
+      display: flex;
+      gap: 10px;
+   }
+
+   .info__bottom > * {
+      text-align: center;
    }
 
    .info__utilities {
@@ -73,6 +107,7 @@
 
    .genres {
       margin-top: 10px;
+      margin-bottom: 5px;
    }
 
    img {
@@ -87,6 +122,12 @@
    h4 {
       font-family: var(--font-vend-sans);
       font-size: 18px;
+   }
+
+   h5 {
+      font-family: var(--font-vend-sans);
+      font-size: 12px;
+      font-weight: 300;
    }
 
    p {
