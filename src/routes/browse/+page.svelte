@@ -38,9 +38,69 @@
 				enabled: false
 			},
 			{
-				value: 'Drama',
+				value: 'Animation',
 				enabled: false
-			}
+			},
+			{
+				value: 'Comedy',
+				enabled: false,
+			},
+			{
+				value: 'Crime',
+				enabled: false,
+			},
+			{
+				value: 	`Documentary`,
+				enabled: false,
+			},
+			{
+				value: 'Drama',
+				enabled: false,
+			},
+			{
+				value: 'Family',
+				enabled: false,
+			},
+			{
+				value: 'Fantasy',
+				enabled: false,
+			},
+			{
+				value: 'History',
+				enabled: false,
+			},
+			{
+				value: 'Horror',
+				enabled: false,
+			},
+			{
+				value: 'Mystery',
+				enabled: false,
+			},
+			{
+				value: 'Romance',
+				enabled: false,
+			},
+			{
+				value: 'Sci-Fi & Fantasy',
+				enabled: false,
+			},
+			{
+				value: 'Science Fiction',
+				enabled: false,
+			},
+			{
+				value: 'Thriller',
+				enabled: false,
+			},
+			{
+				value: 'TV Movie',
+				enabled: false,
+			},
+			{
+				value: 'War',
+				enabled: false,
+			},
 		],
 		duration: {
 			from: {
