@@ -33,6 +33,7 @@
    .media__card {
       display: flex;
       margin-bottom: 10px;
+      min-width: 550px;
 
       background: linear-gradient(120deg, var(--color-dark-low) 30%, var(--color-dark-mid) 85%, var(--color-primary) 100%);
       background-size: 200%;

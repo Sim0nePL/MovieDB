@@ -278,9 +278,14 @@ let response = [
 		</div>
 	</section>
 	<section class="right">
-		{#each response as media}
-			<MediaBanner title={media.title} tagline={media.tagline} image={media.image} genres={media.genres}></MediaBanner>
-		{/each}
+		<div>
+			{#each response as media}
+				<MediaBanner title={media.title} tagline={media.tagline} image={media.image} genres={media.genres}></MediaBanner>
+			{/each}
+		</div>
+		<Button>&larr;</Button>
+		<p class="right__page">Page 2/5</p>
+		<Button>&rarr;</Button>
 	</section>
 </main>
 
@@ -305,8 +310,27 @@ let response = [
 		margin-left: 12px;
 	}
 
-	div {
+	.filters {
 		display: flex;
+		flex-wrap: wrap;
 		gap: 5px;
+	}
+
+	.right__page {
+		display: inline;
+		padding: 5px 50px;
+		background-color: var(--color-dark-mid);
+		border: 2px solid var(--color-dark-high);
+		border-radius: 10px;
+
+		font-family: var(--font-vend-sans);
+		font-weight: 300;
+		font-size: 20px;
+	}
+
+	@media screen and (max-width: 1160px) {
+		:global(body) {
+			padding: 20px 40px;
+		}
 	}
 </style>

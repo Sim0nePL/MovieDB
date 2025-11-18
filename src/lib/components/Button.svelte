@@ -20,6 +20,7 @@
 
       font-family: var(--font-vend-sans);
       font-size: 20px;
+      cursor: pointer;
 
       transition: background-color 0.15s ease, border 0.15s ease;
    }
