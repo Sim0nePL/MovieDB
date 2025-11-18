@@ -3,7 +3,9 @@
 </script>
 
 <div>
-   <input {id} {name} type="radio" value="{value}" bind:group={group} hidden>
+   <input {id} {name} type="radio" value="{value}" bind:group={group} hidden onchange={() => {
+      console.log({group});
+   }}>
    <label for="{id}"> {value} </label>
 </div>
 

@@ -1,6 +1,5 @@
 <script lang="ts">
    let { id, children, checked = $bindable() } = $props();
-   $inspect(checked);
 </script>
 
 <div>
