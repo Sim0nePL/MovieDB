@@ -1,11 +1,7 @@
 <script lang="ts">
-    import Button from '$lib/components/Button.svelte';
-    import TextInput from '$lib/components/TextInput.svelte';
-
     import type { Snippet } from 'svelte';
 
-    let { children, rightSide = true }: { children?: Snippet; rightSide?: boolean } = $props();
-
+    let { children } : { children?: Snippet } = $props();
     let searchValue: string = $state('');
 </script>
 

@@ -5,7 +5,7 @@
     let searchValue: string = $state('');
 </script>
 
-<div class="header__right">
+<section>
     <h3>Odkryj świat <span>filmów</span>!</h3>
     <TextInput id="media_title-input" bind:value={searchValue} placeholder="Black Mirror" />
     <div class="buttons">
@@ -17,10 +17,10 @@
             }}>Browse</Button
         >
     </div>
-</div>
+</section>
 
 <style>
-    .header__right {
+    section {
         text-align: end;
     }
 
@@ -36,7 +36,7 @@
     }
 
     @media screen and (max-width: 1160px) {
-        .header__right {
+        section {
             text-align: center;
         }
     }

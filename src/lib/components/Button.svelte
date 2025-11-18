@@ -29,9 +29,4 @@
 		border-color: var(--color-primary-dim);
    }
 
-   .mojprzycisk {
-      color: red;
-      border: none;
-   }
-
 </style>
