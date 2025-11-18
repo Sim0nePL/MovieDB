@@ -1,12 +1,10 @@
 <script lang="ts">
-   let { id, name, value, group = $bindable() } = $props();
+   let { id, name, value, group = $bindable(), children } = $props();
 </script>
 
 <div>
-   <input {id} {name} type="radio" value="{value}" bind:group={group} hidden onchange={() => {
-      console.log({group});
-   }}>
-   <label for="{id}"> {value} </label>
+   <input {id} {name} type="radio" value="{value}" bind:group={group} hidden>
+   <label for="{id}"> {@render children?.() } </label>
 </div>
 
 <style>

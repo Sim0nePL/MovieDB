@@ -12,7 +12,6 @@
         <Button>Discover</Button>
         <Button
             onclick={() => {
-                if (searchValue == '') return;
                 location.href = `./browse?q=${searchValue}`;
             }}>Browse</Button
         >

@@ -9,10 +9,12 @@
 	import FilterButton from '$lib/components/FilterButton.svelte';
 	import RadioButton from '$lib/components/RadioButton.svelte';
 	import NumberInput from '$lib/components/NumberInput.svelte';
+	import BlankTile from '$lib/components/BlankTile.svelte';
 
-	let media: Media_Scheme = {
+	let media: Media_Querry = $state({
+		title: '',
 		types: {
-			values: [
+			options: [
 				{
 					value: 'movie',
 					name: 'Movie'
@@ -22,15 +24,11 @@
 					name: 'Tv Show'
 				}
 			],
-			result: 'tvshow'
+			value: 'movie'
 		},
 		genres: [
 			{
 				value: 'Action',
-				enabled: false
-			},
-			{
-				value: 'Action & Adventure',
 				enabled: false
 			},
 			{
@@ -43,331 +41,181 @@
 			},
 			{
 				value: 'Comedy',
-				enabled: false,
+				enabled: false
 			},
 			{
 				value: 'Crime',
-				enabled: false,
+				enabled: false
 			},
 			{
-				value: 	`Documentary`,
-				enabled: false,
+				value: 'Documentary',
+				enabled: false
 			},
 			{
 				value: 'Drama',
-				enabled: false,
+				enabled: false
 			},
 			{
 				value: 'Family',
-				enabled: false,
+				enabled: false
 			},
 			{
 				value: 'Fantasy',
-				enabled: false,
+				enabled: false
 			},
 			{
 				value: 'History',
-				enabled: false,
+				enabled: false
 			},
 			{
 				value: 'Horror',
-				enabled: false,
+				enabled: false
 			},
 			{
 				value: 'Mystery',
-				enabled: false,
+				enabled: false
 			},
 			{
 				value: 'Romance',
-				enabled: false,
-			},
-			{
-				value: 'Sci-Fi & Fantasy',
-				enabled: false,
+				enabled: false
 			},
 			{
 				value: 'Science Fiction',
-				enabled: false,
+				enabled: false
 			},
 			{
 				value: 'Thriller',
-				enabled: false,
+				enabled: false
 			},
 			{
 				value: 'TV Movie',
-				enabled: false,
+				enabled: false
 			},
 			{
 				value: 'War',
-				enabled: false,
-			},
-		],
-		duration: {
-			from: {
-				value: null,
-				enabled: false
-			},
-			to: {
-				value: null,
 				enabled: false
 			}
+		],
+		duration: {
+			from: null,
+			to: null,
 		},
 		ratings: {
 			services: [
 				{
-					value: 'imdb',
-					name: 'IMDB',
+					value: 'imdb_users',
+					name: 'IMDB'
 				},
 				{
-					value: 'metacritics',
-					name: 'Metacritic',
+					value: 'metacritic_critics,metacritic_users',
+					name: 'Metacritic'
 				},
 				{
-					value: 'rotten_tomatoes',
-					name: 'Rotten Tomatoes',
+					value: 'rottentomatoes_critics,rottentomatoes_users',
+					name: 'Rotten Tomatoes'
 				}
 			],
-			service: "imdb",
-			from: {
-				value: null,
-				enabled: false
-			},
-			to: {
-				value: null,
-				enabled: false
+			service: 'imdb_users',
+			from: null,
+		},
+		limit: 15,
+		page: 1
+	});
+
+	let response: any = $state(undefined);
+	$inspect(response);
+
+	// Api Call - Returns Result
+	const SearchMedia = async (page: number = 1) => {
+		// TODO : Add Searching status
+		let url = 'https://whatson-api.onrender.com/?'
+
+		if(media.title != '')
+			url += `title=${encodeURIComponent(media.title)}&`
+		
+		if(media.types.value != '')
+			url += `item_type=${encodeURIComponent(media.types.value)}&`
+		
+		if(media.genres.filter((genre) => genre.enabled).length) {
+			let genres = "";
+			media.genres.forEach(genre => {
+				if (genre.enabled)
+					genres += encodeURIComponent(genre.value) + ',';
+			});
+			genres = genres.slice(0, -1);
+			url += `genres=${genres}&`
+		}
+		
+		let runtime = '';
+		if(media.duration.from ?? 0 > 0) {
+			runtime += `runtime=${(media.duration.from ?? 0) * 60}`
+			if((media.duration.to ?? 0) == 0)
+				runtime += ',9999'
+		}
+
+		if(media.duration.to ?? 0 > 0) {
+			if(runtime == '')
+				runtime += 'runtime=0'
+
+			runtime += `,${(media.duration.to ?? 0) * 60}`
+		}
+		if(runtime != '')
+			runtime += "&";
+
+		url += runtime;
+
+		if(media.ratings.from ?? 0 > 0)
+			url += `minimum_ratings=${media.ratings.from}&`
+
+		if(media.ratings.service != '')
+			url += `ratings_filters=${media.ratings.service}&`
+
+		url += `limit=${media.limit}&`
+		url += `page=${page}`
+
+
+		console.log(url);
+
+		try {
+			const response = await fetch(url);
+			if(!response.ok) {
+				throw new Error(`Response status: ${response.status}`);
 			}
 
+			const result = await response.json();
+			return result;
+		} catch (error: any) {
+			console.error(error.message)
 		}
-	};
-
-	let response = [
-		{
-			_id: 'aHR0cHM6Ly93d3cuYWxsb2NpbmUuZnIvc2VyaWVzL2ZpY2hlc2VyaWVfZ2VuX2NzZXJpZT03MTU3Lmh0bWw=',
-			allocine: {
-				id: 7157,
-				url: 'https://www.allocine.fr/series/ficheserie_gen_cserie=7157.html',
-				users_rating: 4.6,
-				users_rating_count: 89659,
-				critics_rating: 4.1,
-				critics_rating_count: 7,
-				popularity: 71
-			},
-			betaseries: {
-				id: 'gameofthrones',
-				url: 'https://www.betaseries.com/serie/gameofthrones',
-				users_rating: 4.67,
-				users_rating_count: 20167
-			},
-			id: 1399,
-			image: 'https://fr.web.img5.acsta.net/pictures/23/01/03/14/13/0717778.jpg',
-			imdb: {
-				id: 'tt0944947',
-				url: 'https://www.imdb.com/title/tt0944947/',
-				users_rating: 9.2,
-				users_rating_count: 2500658,
-				popularity: 13,
-				top_ranking: 13
-			},
-			is_active: true,
-			item_type: 'tvshow',
-			platforms_links: [],
-			seasons_number: 8,
-			status: 'Ended',
-			title: 'Game of Thrones',
-			trailer: 'https://www.dailymotion.com/embed/video/x86esn8',
-			metacritic: {
-				id: 'game-of-thrones',
-				url: 'https://www.metacritic.com/tv/game-of-thrones',
-				users_rating: 8.4,
-				users_rating_count: 19777,
-				critics_rating: 86,
-				critics_rating_count: 171,
-				must_see: true
-			},
-			mojo: null,
-			rotten_tomatoes: {
-				id: 'game_of_thrones',
-				url: 'https://www.rottentomatoes.com/tv/game_of_thrones',
-				users_rating: 85,
-				users_rating_count: null,
-				users_rating_liked_count: null,
-				users_rating_not_liked_count: null,
-				users_certified: false,
-				critics_rating: 89,
-				critics_rating_count: 337,
-				critics_rating_liked_count: 312,
-				critics_rating_not_liked_count: 25,
-				critics_certified: false
-			},
-			updated_at: '2025-11-17T00:43:15.610Z',
-			letterboxd: null,
-			senscritique: {
-				id: 225391,
-				url: 'https://www.senscritique.com/serie/-/225391',
-				users_rating: 8.2,
-				users_rating_count: 166777
-			},
-			trakt: {
-				id: 'game-of-thrones',
-				url: 'https://trakt.tv/shows/game-of-thrones',
-				users_rating: 89,
-				users_rating_count: 142579
-			},
-			tmdb: {
-				id: 1399,
-				url: 'https://www.themoviedb.org/tv/1399',
-				users_rating: 8.46,
-				users_rating_count: 25775
-			},
-			tagline: 'Winter is coming.',
-			release_date: '2011-01-01T00:00:00.000Z',
-			directors: null,
-			genres: ['Sci-Fi & Fantasy', 'Drama', 'Action & Adventure'],
-			tv_time: {
-				id: 121361,
-				url: 'https://www.tvtime.com/show/121361',
-				users_rating: 9.5
-			},
-			thetvdb: {
-				id: 121361,
-				slug: 'game-of-thrones',
-				url: 'https://www.thetvdb.com/series/game-of-thrones'
-			},
-			original_title: 'Game of Thrones',
-			production_companies: [
-				'Revolution Sun Studios',
-				'Television 360',
-				'Generator Entertainment',
-				'Bighead Littlehead'
-			],
-			networks: ['HBO'],
-			is_adult: false,
-			runtime: 3600,
-			certification: 'TV-MA'
-		},
-		{
-			_id: 'aHR0cHM6Ly93d3cuYWxsb2NpbmUuZnIvc2VyaWVzL2ZpY2hlc2VyaWVfZ2VuX2NzZXJpZT0yNTYzMy5odG1s',
-			allocine: {
-				id: 25633,
-				url: 'https://www.allocine.fr/series/ficheserie_gen_cserie=25633.html',
-				users_rating: 4.2,
-				users_rating_count: 6861,
-				critics_rating: 3.5,
-				critics_rating_count: 16,
-				popularity: null
-			},
-			betaseries: {
-				id: 'house-of-the-dragon',
-				url: 'https://www.betaseries.com/serie/house-of-the-dragon',
-				users_rating: 4.32,
-				users_rating_count: 1548
-			},
-			id: 94997,
-			image: 'https://fr.web.img4.acsta.net/pictures/23/05/17/14/30/0480031.jpg',
-			imdb: {
-				id: 'tt11198330',
-				url: 'https://www.imdb.com/title/tt11198330/',
-				users_rating: 8.3,
-				users_rating_count: 494810,
-				popularity: null,
-				top_ranking: 474
-			},
-			is_active: false,
-			item_type: 'tvshow',
-			platforms_links: [''],
-			seasons_number: 4,
-			status: 'Ongoing',
-			title: 'Game of Thrones: House of the Dragon',
-			trailer: 'https://www.dailymotion.com/embed/video/x8yjv6a',
-			metacritic: {
-				id: 'house-of-the-dragon',
-				url: 'https://www.metacritic.com/tv/house-of-the-dragon',
-				users_rating: 5.7,
-				users_rating_count: 2063,
-				critics_rating: 71,
-				critics_rating_count: 83,
-				must_see: false
-			},
-			mojo: null,
-			rotten_tomatoes: {
-				id: 'house_of_the_dragon',
-				url: 'https://www.rottentomatoes.com/tv/house_of_the_dragon',
-				users_rating: 77,
-				users_rating_count: null,
-				users_rating_liked_count: null,
-				users_rating_not_liked_count: null,
-				users_certified: false,
-				critics_rating: 87,
-				critics_rating_count: 100,
-				critics_rating_liked_count: 83,
-				critics_rating_not_liked_count: 17,
-				critics_certified: false
-			},
-			updated_at: '2025-11-16T16:34:21.809Z',
-			letterboxd: null,
-			senscritique: {
-				id: 40572227,
-				url: 'https://www.senscritique.com/serie/-/40572227',
-				users_rating: 7.4,
-				users_rating_count: 14049
-			},
-			trakt: {
-				id: 'house-of-the-dragon',
-				url: 'https://trakt.tv/shows/house-of-the-dragon',
-				users_rating: 81,
-				users_rating_count: 16917
-			},
-			tmdb: {
-				id: 94997,
-				url: 'https://www.themoviedb.org/tv/94997',
-				users_rating: 8.31,
-				users_rating_count: 5567
-			},
-			tagline: 'All must choose.',
-			release_date: '2022-01-01T00:00:00.000Z',
-			directors: null,
-			genres: ['Sci-Fi & Fantasy', 'Drama', 'Action & Adventure'],
-			tv_time: {
-				id: 371572,
-				url: 'https://www.tvtime.com/show/371572',
-				users_rating: 9.68
-			},
-			thetvdb: {
-				id: 371572,
-				slug: 'house-of-the-dragon',
-				url: 'https://www.thetvdb.com/series/house-of-the-dragon'
-			},
-			original_title: 'House of the Dragon',
-			networks: ['HBO'],
-			production_companies: ['HBO', 'Bastard Sword', '1:26 Pictures', 'GRRM'],
-			is_adult: false,
-			runtime: 3600,
-			certification: 'TV-MA'
-		}
-	];
-
-	let searchValue = $state('');
+	}
 
 	onMount(() => {
 		const params = new URLSearchParams(location.search);
-		searchValue = params.get('q') ?? '';
+		media.title = params.get('q') ?? '';
+
+		(async () => {
+			response = await SearchMedia();
+		})();
 	});
 </script>
 
 <main>
 	<section class="left">
-		<Header />
+		<Header/>
+		<Button id="search_button" onclick={async () => {
+			response = await SearchMedia();
+		}}>Search</Button>
 		<h2>Title</h2>
-		<TextInput bind:value={searchValue}></TextInput>
+		<TextInput bind:value={media.title}></TextInput>
 		<h2>Type</h2>
 		<div class="filters">
-			{#each media.types.values as media_type (media_type.value)}
+			{#each media.types.options as media_type (media_type.value)}
 				<RadioButton
 					id={media_type.value}
 					name="media_genre"
-					value={media_type.name}
-					bind:group={media.types.result}
-				></RadioButton>
+					value={media_type.value}
+					bind:group={media.types.value}
+				>{media_type.name}</RadioButton>
 			{/each}
 		</div>
 
@@ -380,38 +228,50 @@
 
 		<h2>Duration</h2>
 		<div class="filters">
-			<FilterButton id="ratings_from" bind:checked={media.duration.from.enabled}>From</FilterButton>
-			<NumberInput postfix="min" bind:value={media.duration.from.value}></NumberInput>
-			<FilterButton id="ratings_to" bind:checked={media.duration.to.enabled}>To</FilterButton>
-			<NumberInput postfix="min" bind:value={media.duration.to.value}></NumberInput>
+			<BlankTile bind:activated={media.duration.from}>From</BlankTile>
+			<NumberInput postfix="min" bind:value={media.duration.from}></NumberInput>
+			<BlankTile bind:activated={media.duration.to}>To</BlankTile>
+			<NumberInput postfix="min" bind:value={media.duration.to}></NumberInput>
 		</div>
 
 		<h2>Ratings</h2>
-		<div class="filters">
-			{#each media.ratings.services as service (service.value)}
-				<RadioButton id={service.value} name="rating_service" value={service.name} bind:group={media.ratings.service}></RadioButton>
+		<div>
+			<div class="filters">
+				{#each media.ratings.services as service (service.value)}
+				<RadioButton
+					id={service.value}
+					name="rating_service"
+					value={service.value}
+					bind:group={media.ratings.service}
+				>{service.name}</RadioButton>
 			{/each}
-			<FilterButton id="duration_from" bind:checked={media.duration.from.enabled}>From</FilterButton>
-			<NumberInput bind:value={media.duration.from.value}></NumberInput>
-			<FilterButton id="duration_to" bind:checked={media.duration.to.enabled}>To</FilterButton>
-			<NumberInput bind:value={media.duration.to.value}></NumberInput>
+			</div>
+			<div class="filters">
+				<BlankTile bind:activated={media.ratings.from}>From</BlankTile>
+				<NumberInput bind:value={media.ratings.from}></NumberInput>
+			</div>
 		</div>
+		<h5>Filters & Limits etc. doesn't work while searching by name ( API limitation )</h5>
+		<h5>Emm... also pages broke when using filters because API returns wrong total_page value...</h5>
 	</section>
 	<section class="right">
-		<h2>Found:</h2>
+		{#if response !== undefined} <!-- Check is response undefined in case api call threw error -->
+		<h2>Found {response.total_results}:</h2>
 		<div>
-			{#each response as media}
-				<MediaBanner
-					title={media.title}
-					tagline={media.tagline}
-					image={media.image}
-					genres={media.genres}
-				></MediaBanner>
-			{/each}
-		</div>
-		<Button>&larr;</Button>
-		<p class="right__page">Page 2/5</p>
-		<Button>&rarr;</Button>
+				{#each response.results as media}
+					<MediaBanner {media}></MediaBanner>
+				{/each}
+			</div>
+			<Button onclick={async () => {
+				if(response.page > 1)
+					response = await SearchMedia(response.page - 1);
+			}}>&larr;</Button>
+			<p class="right_page-index">Page {response.page}/{response.total_pages}</p>
+			<Button onclick={async () => {
+				if (response.page < response.total_pages)
+					response = await SearchMedia(response.page + 1);
+			}}>&rarr;</Button>
+		{/if}
 	</section>
 </main>
 
@@ -419,6 +279,7 @@
 	main {
 		display: flex;
 		flex-wrap: wrap;
+		/* flex-direction: column; */
 		gap: 20px;
 	}
 
@@ -428,33 +289,48 @@
 
 	.left {
 		white-space: nowrap;
+		position: relative;
+	}
+
+	:global(#search_button) {
+		position: absolute;
+		top: 220px;
+		right: 0;
+	}
+
+	
+	.filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 5px;
+		margin-bottom: 5px;
+	}
+	
+	.right_page-index {
+		display: inline;
+		padding: 5px 50px;
+		background-color: var(--color-dark-mid);
+		border: 2px solid var(--color-dark-high);
+		border-radius: 10px;
+		
+		font-family: var(--font-vend-sans);
+		font-weight: 300;
+		font-size: 20px;
 	}
 
 	h2 {
 		font-family: var(--font-expletus-sans);
 		font-size: 36px;
 		margin-left: 12px;
-		margin-top: 20px;
+		margin-top: 10px;
 	}
 
-	.filters {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 5px;
-	}
-
-	.right__page {
-		display: inline;
-		padding: 5px 50px;
-		background-color: var(--color-dark-mid);
-		border: 2px solid var(--color-dark-high);
-		border-radius: 10px;
-
+	h5 {
 		font-family: var(--font-vend-sans);
-		font-weight: 300;
-		font-size: 20px;
+		font-size: 16px;
+		font-weight: 500;
 	}
-
+	
 	@media screen and (max-width: 1160px) {
 		:global(body) {
 			padding: 20px 40px;

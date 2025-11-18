@@ -2,25 +2,25 @@
    import FavouriteIcon from '$lib/assets/icons8-star-100.png';
    import WatchLaterIcon from '$lib/assets/icons8-clock-48.png';
 
-	let { title, tagline, image, genres } = $props();
+	let { media } = $props();
 </script>
 
 <div class="media__card">
-   <img src={image} alt="{title} Poster" width="180px">
+   <img src={media.image} alt="{media.title} Poster" width="130px">
    <div class="info">
       <div class="info__title">
-         <h3>{title}</h3>
+         <h3>{media.title}</h3>
          <div class="info__utilities">
             <img src={FavouriteIcon} alt="Add to favourites list" width="30px">
             <img src={WatchLaterIcon} alt="Add to watch later list" width="30px">
          </div>
       </div>
       <div class="tagline">
-         <p>{tagline}</p>
+         <p>{media.tagline}</p>
       </div>
       <div class="genres">
          <h4>Genres</h4>
-         {#each genres as genre}
+         {#each media.genres as genre}
             <p class="tag">{genre}</p>
          {/each}
       </div>
@@ -45,6 +45,12 @@
 
    .media__card:hover {
       background-position: right bottom;
+   }
+
+   .info__utilities {
+      display: flex;
+      flex-wrap: nowrap;
+      height: fit-content;
    }
 
    .info {

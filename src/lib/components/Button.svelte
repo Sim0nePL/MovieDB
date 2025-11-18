@@ -2,11 +2,11 @@
 	import type { Snippet } from "svelte";
 	import type { MouseEventHandler } from "svelte/elements";
 
-   let { children, onclick, ...props } : { children : Snippet, onclick? : MouseEventHandler<HTMLButtonElement> } = $props();
+   let { id, children, onclick, ...props } : { id? : string, children : Snippet, onclick? : MouseEventHandler<HTMLButtonElement> } = $props();
 
 </script>
 
-<button {...props} {onclick}>
+<button {id} {...props} {onclick}>
    {@render children()}
 </button>
 
