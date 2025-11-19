@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Footer from "$lib/components/Footer.svelte";
    import Header from "$lib/components/Header.svelte";
 	import MediaBrowse from "$lib/components/MediaBrowse.svelte";
    import MediaList from "$lib/components/MediaList.svelte";
@@ -86,3 +87,5 @@
 {#if popupMedia}
    <MediaPopup media={popupMedia.media} bind:visible={popupVisible}></MediaPopup>
 {/if}
+
+<Footer></Footer>

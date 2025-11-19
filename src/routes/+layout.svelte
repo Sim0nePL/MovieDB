@@ -40,7 +40,7 @@
 			/* width: 100vw; */
 			min-height: 100vh;
 			background: linear-gradient(150deg, var(--color-dark-low) 40%, var(--color-background) 100%);
-			padding: 20px 100px;
+			padding: 20px 100px 0 100px;
 		}
 
 		span {

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 
+	import Footer from '$lib/components/Footer.svelte';
 	import Header from '$lib/components/Header.svelte';
 	import Button from '$lib/components/Button.svelte';
 	import MediaBanner from '$lib/components/MediaBanner.svelte';
@@ -284,6 +285,7 @@
 	{#if popupMedia}
    <MediaPopup media={popupMedia.media} bind:visible={popupVisible}></MediaPopup>
 	{/if}
+<Footer></Footer>
 </main>
 
 <style>
