@@ -1,11 +1,15 @@
 <script lang="ts">
 	import CloseIcon from '$lib/assets/icons8-close-48.png';
 	import AddToFavourite from './AddToFavourite.svelte';
+	import CloseButton from './CloseButton.svelte';
 
 	let { media, visible = $bindable() }: { media: any; visible?: number | boolean | null} = $props();
 </script>
 
-<section id="media__popup" class={visible ? 'visible' : ''}>
+<button class="mouseclick_closepopup {visible ? 'visible' : ''}" onclick={(e: any) => {
+	if(e.target.classList.contains("mouseclick_closepopup"))
+		visible = false }} 
+	id="media__popup">
 	<div class="popup">
 		<img src={media.image} alt="{media.title} poster" />
 		<div class="popup__info">
@@ -13,11 +17,9 @@
 				<h1>{media.title}</h1>
 				<div class="title__options">
 					<AddToFavourite mediaId={media.id} mediaType={media.item_type} size=40/>
-					<button onclick={() => {
+					<CloseButton onclick={() => {
 						visible = false;
-					}}>
-						<img src={CloseIcon} alt="Close" />
-					</button>
+					}}></CloseButton>
 				</div>
 			</div>
 			<div class="description">
@@ -66,19 +68,21 @@
 			</div>
 		</div>
 	</div>
-</section>
+</button>
 
 <style>
 	@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
-	section {
+	button {
 		position: fixed;
 		left: 0;
 		top: 0;
 		width: 100%;
 		height: 100%;
 
-		background-color: rgba(25, 25, 25, 0);
-		backdrop-filter: blur(0px);
+		background: rgba(25, 25, 25, 0.25);
+		backdrop-filter: blur(5px);
+		border: none;
+		outline: none;
 		z-index: -100;
 
 		transition:
@@ -92,13 +96,6 @@
       transition: opacity 0.2s ease, z-index 0.2s ease;
 	}
 
-	button {
-		background: none;
-		border: none;
-		outline: none;
-		padding: 0;
-	}
-
    .visible {
       opacity: 1;
       z-index: 100;
@@ -107,11 +104,6 @@
    .visible > .popup {
       transform: translateY(0);
    }
-
-	section {
-		background-color: rgba(31, 31, 31, 0.25);
-		backdrop-filter: blur(5px);
-	}
 
 	.popup {
 		display: flex;

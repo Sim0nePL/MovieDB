@@ -56,7 +56,7 @@
    let toWatchData: any = $state([]);
 
    let popupMedia: any = $state();
-   let popupVisible: boolean = $state(false);
+   let popupVisible: boolean = $state(true);
 
    
    onMount(async () => {
@@ -79,7 +79,7 @@
 
       <!-- Favourites -->
       {#if favouritesData.length > 0}
-      <MediaList title="Favourites" medias={favouritesData}></MediaList>
+      <MediaList title="Favourites" medias={favouritesData} bind:popupMedia={popupMedia} bind:popupVisible={popupVisible}></MediaList>
       {/if}   
    {/if}
 </main>
