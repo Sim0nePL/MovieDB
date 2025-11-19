@@ -10,6 +10,7 @@
 	import RadioButton from '$lib/components/RadioButton.svelte';
 	import NumberInput from '$lib/components/NumberInput.svelte';
 	import BlankTile from '$lib/components/BlankTile.svelte';
+	import MediaPopup from '$lib/components/MediaPopup.svelte';
 
 	let media: Media_Querry = $state({
 		title: '',
@@ -123,7 +124,6 @@
 	});
 
 	let result: any = $state(undefined);
-	$inspect(result);
 
 	// Api Call - Returns Result
 	const SearchMedia = async (page: number = 1) => {
@@ -188,6 +188,9 @@
 			console.error(error.message)
 		}
 	}
+
+   let popupMedia: any = $state();
+   let popupVisible: boolean = $state(false);
 
 	onMount(() => {
 		const params = new URLSearchParams(location.search);
@@ -259,7 +262,12 @@
 		<h2>Found {result.total_results}:</h2>
 		<div>
 				{#each result.results as media}
-					<MediaBanner {media}></MediaBanner>
+					<MediaBanner {media} onclick={(e: any) => {
+						if(!e.target.classList.contains("mouseclick_preventdefault")) {
+							popupMedia = {media};
+							popupVisible = true;
+						}
+					}} ></MediaBanner>
 				{/each}
 			</div>
 			<Button onclick={async () => {
@@ -273,6 +281,9 @@
 			}}>&rarr;</Button>
 		{/if}
 	</section>
+	{#if popupMedia}
+   <MediaPopup media={popupMedia.media} bind:visible={popupVisible}></MediaPopup>
+	{/if}
 </main>
 
 <style>

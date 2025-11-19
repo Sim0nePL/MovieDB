@@ -1,0 +1,234 @@
+<script lang="ts">
+	import CloseIcon from '$lib/assets/icons8-close-48.png';
+	import AddToFavourite from './AddToFavourite.svelte';
+
+	let { media, visible = $bindable() }: { media: any; visible?: number | boolean | null} = $props();
+</script>
+
+<section id="media__popup" class={visible ? 'visible' : ''}>
+	<div class="popup">
+		<img src={media.image} alt="{media.title} poster" />
+		<div class="popup__info">
+			<div class="title__row">
+				<h1>{media.title}</h1>
+				<div class="title__options">
+					<AddToFavourite mediaId={media.id} mediaType={media.item_type} size=40/>
+					<button onclick={() => {
+						visible = false;
+					}}>
+						<img src={CloseIcon} alt="Close" />
+					</button>
+				</div>
+			</div>
+			<div class="description">
+				<p>{media.tagline}</p>
+			</div>
+			<h2>Genres</h2>
+			<ul class="genres__list">
+				{#each media.genres as genre}
+					<li>{genre}</li>
+				{/each}
+			</ul>
+			{#if media.production_companies}
+				<h2>Studios</h2>
+				<ul class="studios__list">
+					{#each media.production_companies as studio}
+						<li>{studio}</li>
+					{/each}
+				</ul>
+			{/if}
+			{#if media.platforms_links}
+				<h2>Watch On</h2>
+				<ul class="platforms__list">
+					{#each media.platforms_links as platforms_links}
+						<li class="clickable"><a href={platforms_links.link_url}>{platforms_links.name}</a></li>
+					{/each}
+				</ul>
+			{/if}
+			<h2>Duration</h2>
+			<ul class="platforms__list">
+				<li>{media.runtime / 60} min</li>
+			</ul>
+
+			<div class="footer">
+				<div class="release__year">
+					<h3>Release Year</h3>
+					<p>2010</p>
+				</div>
+				<div class="release__year">
+					<h3>Status</h3>
+					<p>Ended</p>
+				</div>
+				<div class="release__year">
+					<h3>Seasons</h3>
+					<p>8</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<style>
+	@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+	section {
+		position: fixed;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+
+		background-color: rgba(25, 25, 25, 0);
+		backdrop-filter: blur(0px);
+		z-index: -100;
+
+		transition:
+			background-color 0.2s ease,
+			backdrop-filter 0.2s ease;
+
+		padding: 20vh 10vw;
+
+      opacity: 0;
+
+      transition: opacity 0.2s ease, z-index 0.2s ease;
+	}
+
+	button {
+		background: none;
+		border: none;
+		outline: none;
+		padding: 0;
+	}
+
+   .visible {
+      opacity: 1;
+      z-index: 100;
+   }
+
+   .visible > .popup {
+      transform: translateY(0);
+   }
+
+	section {
+		background-color: rgba(31, 31, 31, 0.25);
+		backdrop-filter: blur(5px);
+	}
+
+	.popup {
+		display: flex;
+		background: linear-gradient(60deg, var(--color-dark-low) 70%, var(--color-dark-mid) 100%);
+		border-radius: 20px;
+      
+      transform: translateY(400px);
+      transition: transform 0.2s ease;
+	}
+
+	.popup > img {
+		height: 60vh;
+	}
+
+	.popup__info {
+		gap: 5px;
+
+		width: 100%;
+		padding: 20px 40px;
+	}
+
+	.title__options {
+		display: flex;
+		justify-content: flex-end;
+
+		height: 40px;
+	}
+
+	.title__row {
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.description {
+		padding: 5px 15px;
+		margin-bottom: 10px;
+	}
+
+	.footer {
+		display: flex;
+		gap: 60px;
+	}
+
+	.footer > * {
+		text-align: center;
+	}
+
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+		padding: 5px 15px;
+		list-style-type: none;
+	}
+
+	li {
+		background: var(--color-dark-mid);
+		padding: 5px 25px;
+		border-radius: 5px;
+		transition: background-color 0.2s ease;
+	}
+
+	.clickable:hover {
+		background: var(--color-dark-high);
+	}
+
+	h1 {
+		font-family: var(--font-expletus-sans);
+		font-size: 36px;
+	}
+
+	h2 {
+		font-family: 'Josefin Sans', sans-serif;
+		font-size: 28px;
+		font-weight: 600;
+	}
+
+	h3 {
+		font-family: var(--font-expletus-sans);
+		font-size: 22px;
+	}
+
+	li {
+		font-family: var(--font-vend-sans);
+	}
+
+	a {
+		text-decoration: none;
+	}
+
+	p {
+		font-family: var(--font-vend-sans);
+	}
+
+	img {
+		height: 100%;
+		border-radius: 15px;
+	}
+
+	@media screen and (max-width: 1250px) {
+		section {
+			padding: 20vh 10vw;
+		}
+
+		.popup {
+			flex-direction: column;
+		}
+
+		.popup > img {
+			object-fit: cover;
+			height: 30vh;
+		}
+	}
+
+   	@media screen and (max-width: 800px) {
+		section {
+			padding: 0;
+		}
+	}
+</style>

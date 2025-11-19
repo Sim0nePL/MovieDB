@@ -6,7 +6,7 @@
 </script>
 
 <header>
-    <h1><a href="/">Porn <span>DB</span></a></h1>
+    <h1><a href="/">Movie <span>DB</span></a></h1>
     {@render children?.()}
 </header>
 

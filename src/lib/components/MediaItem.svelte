@@ -1,18 +1,28 @@
 <script lang="ts">
-   let { mediaId, mediaType, imgURL, scrollValue } : 
-      { mediaId : Number, mediaType : string, imgURL : string, scrollValue? : Number} = $props();
+	import AddToFavourite from "./AddToFavourite.svelte";
 
-   let isFavourite = $state(false);
+   let { mediaId, mediaType, imgURL, scrollValue, onclick } : 
+      { mediaId : Number, mediaType : string, imgURL : string, scrollValue? : Number, onclick?: any} = $props();
+
 </script>
 
 <li style="transform: translateX(-{scrollValue}px);">
-   <img src="{imgURL}" alt="MEDIA" width="180" height="270">
-   <input class="{ isFavourite ? 'activated' : '' }" type="button" onclick={() => {
-      isFavourite = !isFavourite;
-   }}>
+   <button {onclick}>
+      <img src="{imgURL}" alt="MEDIA" width="180" height="270">
+   </button>
+   <div class="favourite_pos">
+      <AddToFavourite {mediaId} {mediaType} size=40></AddToFavourite>
+   </div>
 </li>
 
 <style>
+   button {
+      padding: 0;
+      background: 0;
+      outline: 0;
+      border: 0;
+   }
+
    li {
       position: relative;
       padding: 0;
@@ -22,7 +32,7 @@
       transition: transform 0.4s ease;
    }
 
-   input {
+   .favourite_pos {
       position: absolute;
       width: 40px;
       height: 40px;
@@ -32,21 +42,13 @@
       background: none;
       border: none;
       padding: 0;
-      
-      background-image: url("../assets/icons8-star-100.png");
-      background-size: 40px 40px;
-      cursor: pointer;
 
       opacity: 0;
       
       transition: opacity 0.2s ease;
    }
 
-   .activated {
-      background-image: url("../assets/icons8-star-filled-100.png");
-   }
-
-   li:hover input {
+   li:hover .favourite_pos {
       opacity: 1;
    }
 
