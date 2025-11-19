@@ -204,10 +204,6 @@
 	}
 
 	@media screen and (max-width: 1250px) {
-		section {
-			padding: 20vh 10vw;
-		}
-
 		.popup {
 			flex-direction: column;
 		}
@@ -215,12 +211,6 @@
 		.popup > img {
 			object-fit: cover;
 			height: 30vh;
-		}
-	}
-
-   	@media screen and (max-width: 800px) {
-		section {
-			padding: 0;
 		}
 	}
 </style>
