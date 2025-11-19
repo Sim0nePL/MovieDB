@@ -47,24 +47,32 @@
 					{/each}
 				</ul>
 			{/if}
+			{#if media.runtime}
 			<h2>Duration</h2>
 			<ul class="platforms__list">
 				<li>{media.runtime / 60} min</li>
 			</ul>
+			{/if}
 
 			<div class="footer">
+				{#if media.release_date}
 				<div class="release__year">
 					<h3>Release Year</h3>
-					<p>2010</p>
+					<p>{media.release_date.split('-')[0]}</p>
 				</div>
-				<div class="release__year">
+				{/if}
+				{#if media.status}
+				<div class="status">
 					<h3>Status</h3>
-					<p>Ended</p>
+					<p>{media.status}</p>
 				</div>
-				<div class="release__year">
+				{/if}
+				{#if media.seasons_number}
+				<div class="seasons">
 					<h3>Seasons</h3>
-					<p>8</p>
+					<p>{media.seasons_number}</p>
 				</div>
+				{/if}
 			</div>
 		</div>
 	</div>
@@ -123,6 +131,7 @@
 
 		width: 100%;
 		padding: 20px 40px;
+		text-align: left;
 	}
 
 	.title__options {
@@ -145,9 +154,7 @@
 	.footer {
 		display: flex;
 		gap: 60px;
-	}
-
-	.footer > * {
+		margin-top: 20px;
 		text-align: center;
 	}
 
@@ -211,6 +218,19 @@
 		.popup > img {
 			object-fit: cover;
 			height: 30vh;
+		}
+	}
+
+	@media screen and (max-width: 600px) {
+		button {
+			padding: 0;
+		}
+
+		.popup__info {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			text-align: center;
 		}
 	}
 </style>
